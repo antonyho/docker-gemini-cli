@@ -17,8 +17,8 @@ docker run -it \
     --name gemini-cli \
     --network host \
     -v $HOME/.gemini:/home/node/.gemini \
-    -v $(pwd):/project \
-    -w /project \
+    -v $(pwd):/workspace \
+    -w /workspace \
     antonyho/gemini-cli gemini -d
 ```
 
@@ -35,8 +35,8 @@ Next time, to start a container. Use:
 docker run -it \
     --name gemini-cli \
     -v $HOME/.gemini:/home/node/.gemini \
-    -v $(pwd):/project \
-    -w /project \
+    -v $(pwd):/workspace \
+    -w /workspace \
     antonyho/gemini-cli
 ```
 
@@ -45,7 +45,7 @@ docker run -it \
 ## Authenticate by Gemini API key
 This is very useful when you can create an API key from Google Cloud. And when your Docker has user namespace enabled.
 
-Create a plain text file named `.env`.
+Create a plain text file named `.env`. I would store it inside `~/.gemini`, as it is a secret.
 Put your API key into the file with environment variable name `GEMINI_API_KEY`.
 
 For example:
@@ -53,15 +53,32 @@ For example:
 GEMINI_API_KEY=my_api_key_hex_text
 ```
 
-Start the container.
+If you are using API key authentication, I recommend yu to put the `.env` inside `~/.gemini` so that your API key won't be scanned by Gemini CLI during inferencing.
+
+Start the container. *I have habit to remove the exited container*
 ```
-docker run -it \
+docker run -it --rm \
     --name gemini-cli \
-    -v $HOME/.gemini:/home/node/.gemini \
-    -v $(pwd):/project \
-    -w /project \
+    -v $HOME/.gemini:/root/.gemini \
+    -v $(pwd):/workspace \
+    -w /workspace \
     antonyho/gemini-cli
 ```
 
 
-You should check the user of your Docker service. And also the permission for the Docker user to access your `~/.gemini` and your mounted volume to working directory.
+You should check the user of your Docker service. And also the permission for the Docker user to access your `~/.gemini` and your mounted volume to worvking directory.
+Especially when you have user namespace enabled on your Docker configuration.
+Using `--userns=host` to disable user namespace for this container, along with `-u $(id -u):$(id -g)` could possibly solve the permission problem.
+
+```
+docker run -it --rm \
+    --name gemini-cli \
+    --userns=host \
+    -u $(id -u):$(id -g) \
+    -v $HOME/.gemini:/home/node/.gemini \
+    -v $(pwd):/workspace \
+    -w /workspace \
+    antonyho/gemini-cli
+```
+
+Gemini CLI would also take the `.gemini` in the workspace directory into account.
