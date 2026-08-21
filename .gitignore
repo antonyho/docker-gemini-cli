@@ -1,3 +1,4 @@
 # This file stores environment variable(s) to be used inside the container
 # It might contain sensitive data or credentials
 .env
+.gemini-cfg
