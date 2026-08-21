@@ -40,5 +40,5 @@ jobs:
         run: |
           gh release create "v${{ steps.npm.outputs.version }}" \
             --title "v${{ steps.npm.outputs.version }}" \
-            --notes "Gemini CLI v{{ steps.npm.outputs.version }}
+            --notes "Gemini CLI v${{ steps.npm.outputs.version }}
             Automated release tracking @google/gemini-cli@${{ steps.npm.outputs.version }} on npm."
