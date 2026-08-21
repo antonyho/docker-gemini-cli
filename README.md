@@ -11,12 +11,12 @@
 
 ### First Launch Setup
 On first launch, Gemini CLI will:
-1. Prompt you to sign in with your Claude account or API key
+1. Prompt you to sign in with your Google account or API key
 2. Create a `.gemini` directory in your current workspace
 
 ### Directory Structure
 - Current directory - Mounted to `/workspace` for code access
-- `.gemini-cfg` directory will be initialised by Claude Code on first launch
+- `.gemini-cfg` directory will be initialised by Gemini CLI on first launch
 
 *Consider adding the `.gemini-cfg` directory to your project's `.gitignore` to keep your user secret and settings private.*
 
@@ -29,7 +29,7 @@ This prevents permission issues when Gemini CLI creates files in mounted volumes
 **You are very likely that you don't need them if you have not configured user namespace on your Docker service.**
 
 ```sh
-# Run Claude Code in Docker
+# Run Gemini CLI in Docker
 docker run -it --rm \
     --name gemini-cli \
     --userns=host \
